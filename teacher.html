@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Moroccan EduHub</title>
+    <title>Moroccan EduHub - Teacher</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -12,34 +12,44 @@
         <div class="logo">📚 Moroccan EduHub</div>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="#">Courses</a></li>
-          <li><a href="#">Teachers</a></li>
+          <li><a href="#">Your Courses</a></li>
           <li><a href="#">Blog</a></li>
         </ul>
-        <div class="user-actions">
-          <a href="#" id="login-btn" class="login-btn">Login</a>
-          <a href="#" id="register-btn" class="register-btn">Register</a>
+        <div class="search-container">
+          <input type="text" placeholder="Search courses..." />
+          <select>
+            <option value="">Filter by Subject</option>
+          </select>
+          <select>
+            <option value="">Filter by Grade</option>
+          </select>
+        </div>
+        <div class="user-profile">
+          <img
+            src="https://i.pravatar.cc/40"
+            alt="User Avatar"
+            id="user-avatar"
+          />
+          <div class="dropdown-content" id="user-dropdown">
+            <a href="teacher-profile.html">Your Profile</a>
+            <a href="#" id="logout-btn">Log Out</a>
+          </div>
         </div>
       </nav>
     </header>
     <main>
       <div class="content">
-        <h1>Morocco’s First Educational Platform</h1>
+        <h1>Welcome, Teacher!</h1>
         <p>
-          A safe space for teachers and students. Focus on learning and
-          collaboration. Connect, share, and grow together.Say Goodbye to
-          WhatsApp and Telegram for Education
+          Manage your courses, connect with students, and share your knowledge.
         </p>
-        <a href="#" id="get-started-btn"
-          ><button class="get-started-btn">Get Started &raquo;</button></a
-        >
       </div>
       <div class="image-container">
         <img src="home.png" alt="Illustration of a polar bear with flowers" />
       </div>
     </main>
     <section class="trending-courses">
-      <h2>Trending courses this week</h2>
+      <h2>Your Active Courses</h2>
       <div class="course-boxes">
         <div class="course-box"></div>
         <div class="course-box"></div>
@@ -51,19 +61,18 @@
         <img src="picture.png" alt="A descriptive image" />
       </div>
       <div class="description-container">
-        <h3>“Choose the Best Course for You”</h3>
+        <h3>“Empower the next generation.”</h3>
         <ul>
           <li>
-            Select from thousands of <a href="#">Courses</a> taught by Morocco’s
-            top <a href="#">Teachers</a>.
+            Create engaging courses and share your expertise with students
+            across Morocco.
           </li>
           <li>
-            Not sure which course fits you? Check student feedback and
-            recommendations on our <a href="#">Blog</a>.
+            Use our tools to track student progress and provide valuable
+            feedback.
           </li>
           <li>
-            Read the course description carefully to make sure it matches your
-            learning style and goals.
+            Collaborate with other educators and grow your professional network.
           </li>
         </ul>
       </div>
@@ -76,6 +85,10 @@
         <li><a href="#">Contact Us</a></li>
       </ul>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="firebase-auth.js"></script>
     <script src="main.js"></script>
   </body>
 </html>

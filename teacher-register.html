@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Registration</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>Teacher Registration</h1>
+      <form id="teacher-register-form">
+        <label for="teacher-email">Email:</label>
+        <input type="email" id="teacher-email-register" name="email" required />
+        <label for="teacher-password">Password:</label>
+        <input
+          type="password"
+          id="teacher-password-register"
+          name="password"
+          required
+        />
+        <label for="teacher-confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="teacher-confirm-password-register"
+          name="confirm_password"
+          required
+        />
+        <input type="submit" value="Register" class="submit-btn" />
+      </form>
+      <a href="index.html">Back to Home</a>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="firebase-auth.js"></script>
+  </body>
+</html>

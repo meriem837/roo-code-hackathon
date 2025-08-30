@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>Student Registration</h1>
+      <form id="student-register-form">
+        <label for="student-email">Email:</label>
+        <input type="email" id="student-email-register" name="email" required />
+        <label for="student-grade">Which grade are you in?</label>
+        <input type="text" id="student-grade-register" name="grade" />
+        <label for="student-subjects"
+          >Which subject(s) are you interested in?</label
+        >
+        <input type="text" id="student-subjects-register" name="subjects" />
+        <input type="submit" value="Register" class="submit-btn" />
+      </form>
+      <div id="success-message" style="display: none; margin-top: 15px"></div>
+      <a href="index.html">Back to Home</a>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="firebase-auth.js"></script>
+  </body>
+</html>
