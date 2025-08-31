@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Feedback - Moroccan EduHub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">📚 Moroccan EduHub</div>
+        <ul>
+          <li><a id="dashboard-link" href="index.html">Dashboard</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="blog-page">
+      <h1 id="page-main-heading">Course Feedback</h1>
+      <div
+        id="teacher-feedback-heading"
+        style="display: none; text-align: center"
+      >
+        <h1>
+          See what students think about your course, get feedback and level up
+        </h1>
+      </div>
+      <div id="feedback-posts" class="blog-posts">
+        <!-- Feedback posts will be dynamically inserted here -->
+      </div>
+
+      <!-- Floating Action Button and Drop-up Form for Students -->
+      <div id="student-feedback-fab-container" style="display: none">
+        <div id="feedback-dropup-container">
+          <h2>Submit Your Feedback</h2>
+          <form id="feedback-form">
+            <input
+              type="text"
+              id="course-tag"
+              placeholder="Course Name"
+              required
+            />
+            <textarea
+              id="feedback-text"
+              placeholder="Your feedback..."
+              required
+            ></textarea>
+            <button type="submit" class="submit-btn">Publish</button>
+            <button
+              type="button"
+              id="close-feedback-form"
+              class="submit-btn"
+              style="background-color: #ccc; margin-top: 10px"
+            >
+              Close
+            </button>
+          </form>
+        </div>
+        <button id="feedback-fab">+</button>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2025 Moroccan EduHub. All rights reserved.</p>
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="blog.js"></script>
+  </body>
+</html>

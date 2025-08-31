@@ -14,14 +14,32 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="#">Courses</a></li>
           <li><a href="#">Teachers</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="blog.html">Blog</a></li>
         </ul>
+        <div class="search-container">
+          <input type="text" placeholder="Search courses..." />
+          <button class="search-btn">&#128269;</button>
+        </div>
         <div class="user-actions">
-          <a href="#" id="login-btn" class="login-btn">Login</a>
-          <a href="#" id="register-btn" class="register-btn">Register</a>
+          <a href="login.html" class="login-btn">Login</a>
+          <a href="register.html" class="register-btn">Register</a>
+          <div class="user-profile" style="display: none">
+            <div class="user-avatar-initial" id="user-avatar"></div>
+            <div class="dropdown-content" id="user-dropdown">
+              <a href="#" id="profile-link">Your Profile</a>
+              <a href="#" id="logout-btn">Logout</a>
+            </div>
+          </div>
         </div>
       </nav>
+      <div class="filter-container" style="display: none">
+        <input type="text" placeholder="Filter by Subject" />
+        <input type="text" placeholder="Filter by Grade" />
+      </div>
     </header>
+    <div id="search-results" style="display: none">
+      <p>There are still no courses yet.</p>
+    </div>
     <main>
       <div class="content">
         <h1>Morocco’s First Educational Platform</h1>
@@ -76,6 +94,10 @@
         <li><a href="#">Contact Us</a></li>
       </ul>
     </footer>
-    <script src="main.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="ui.js"></script>
   </body>
 </html>
