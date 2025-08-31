@@ -19,6 +19,20 @@
       <div class="form-container">
         <h1>Edit Your Profile</h1>
         <form id="teacher-profile-form">
+          <div class="profile-pic-container">
+            <div
+              id="profile-pic"
+              class="user-avatar-initial profile-page-avatar"
+            ></div>
+            <input
+              type="file"
+              id="photo-upload"
+              name="photo"
+              accept="image/*"
+            />
+            <label for="photo-upload" class="upload-btn">Change Photo</label>
+          </div>
+
           <label for="username">Username:</label>
           <input type="text" id="username" name="username" />
 
@@ -44,6 +58,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
     <script src="firebase-auth.js"></script>
   </body>
 </html>

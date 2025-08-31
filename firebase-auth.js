@@ -14,11 +14,65 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// ---------- GLOBAL AUTH LISTENER ----------
+document.addEventListener("DOMContentLoaded", () => {
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      const userRef = db.collection("users").doc(user.uid);
+      const userSnap = await userRef.get();
+      const userData = userSnap.exists ? userSnap.data() : {};
+
+      // Update Dashboard and Profile Avatars
+      const userAvatar = document.getElementById("user-avatar");
+      const profilePic = document.getElementById("profile-pic");
+
+      const updateAvatar = (element) => {
+        if (!element) return;
+        element.innerHTML = "";
+        element.style.backgroundImage = "";
+        element.classList.remove("user-avatar-image");
+
+        if (userData.photoURL) {
+          element.classList.add("user-avatar-image");
+          element.style.backgroundImage = `url(${userData.photoURL})`;
+        } else {
+          element.textContent = user.email.charAt(0).toUpperCase();
+        }
+      };
+
+      updateAvatar(userAvatar);
+      updateAvatar(profilePic);
+
+      // Populate Profile Forms
+      const teacherProfileForm = document.getElementById(
+        "teacher-profile-form"
+      );
+      if (teacherProfileForm) {
+        teacherProfileForm.username.value = userData.username || "";
+        teacherProfileForm.expertise.value = userData.expertise || "";
+        teacherProfileForm.education.value = userData.education || "";
+        teacherProfileForm.experience.value = userData.experience || "";
+      }
+
+      const studentProfileForm = document.getElementById(
+        "student-profile-form"
+      );
+      if (studentProfileForm) {
+        studentProfileForm.username.value = userData.username || "";
+        studentProfileForm.grade.value = userData.grade || "";
+        studentProfileForm.subjects.value = userData.subjects || "";
+        studentProfileForm.bio.value = userData.bio || "";
+      }
+    }
+  });
+});
+
 // ---------- TEACHER REGISTRATION ----------
 const teacherRegisterForm = document.getElementById("teacher-register-form");
 if (teacherRegisterForm) {
   teacherRegisterForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const username = teacherRegisterForm.username.value;
     const email = teacherRegisterForm.email.value;
     const password = teacherRegisterForm.password.value;
     const confirmPassword = teacherRegisterForm.confirm_password.value;
@@ -34,7 +88,11 @@ if (teacherRegisterForm) {
         password
       );
       const user = userCredential.user;
-      const userData = { email: user.email, role: "teacher" };
+      const userData = {
+        email: user.email,
+        username: username,
+        role: "teacher",
+      };
       await db.collection("users").doc(user.uid).set(userData);
       alert("Registration successful! Redirecting to your dashboard.");
       window.location.href = "teacher.html";
@@ -50,6 +108,7 @@ if (studentRegisterForm) {
   studentRegisterForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("student-email-register").value;
+    const username = document.getElementById("student-username-register").value;
     const grade = document.getElementById("student-grade-register").value;
     const subjects = document.getElementById("student-subjects-register").value;
 
@@ -62,6 +121,7 @@ if (studentRegisterForm) {
       const user = userCredential.user;
       const userData = {
         email: user.email,
+        username: username,
         role: "student",
         grade: grade,
         subjects: subjects,
@@ -140,84 +200,48 @@ if (logoutBtn) {
   });
 }
 
-// ---------- PROFILE PAGE LOGIC ----------
+// ---------- PROFILE FORM SUBMISSION ----------
+const handleProfileFormSubmit = async (e, form, additionalData) => {
+  e.preventDefault();
+  const user = auth.currentUser;
+  if (user) {
+    const userRef = db.collection("users").doc(user.uid);
+    await userRef.update(additionalData);
+
+    const photoUpload = form.querySelector("#photo-upload");
+    const file = photoUpload.files[0];
+    if (file) {
+      const storageRef = firebase.storage().ref();
+      const photoRef = storageRef.child(`profile-pictures/${user.uid}`);
+      await photoRef.put(file);
+      const photoURL = await photoRef.getDownloadURL();
+      await userRef.update({ photoURL });
+    }
+
+    alert("Profile updated successfully!");
+  }
+};
+
 const teacherProfileForm = document.getElementById("teacher-profile-form");
 if (teacherProfileForm) {
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      const userRef = db.collection("users").doc(user.uid);
-      const userSnap = await userRef.get();
-      if (userSnap.exists) {
-        const userData = userSnap.data();
-        teacherProfileForm.username.value = userData.username || "";
-        teacherProfileForm.expertise.value = userData.expertise || "";
-        teacherProfileForm.education.value = userData.education || "";
-        teacherProfileForm.experience.value = userData.experience || "";
-      }
-    }
-  });
-
-  teacherProfileForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const user = auth.currentUser;
-    if (user) {
-      const userRef = db.collection("users").doc(user.uid);
-      await userRef.update({
-        username: teacherProfileForm.username.value,
-        expertise: teacherProfileForm.expertise.value,
-        education: teacherProfileForm.education.value,
-        experience: teacherProfileForm.experience.value,
-      });
-      alert("Profile updated successfully!");
-    }
-  });
+  teacherProfileForm.addEventListener("submit", (e) =>
+    handleProfileFormSubmit(e, teacherProfileForm, {
+      username: teacherProfileForm.username.value,
+      expertise: teacherProfileForm.expertise.value,
+      education: teacherProfileForm.education.value,
+      experience: teacherProfileForm.experience.value,
+    })
+  );
 }
 
 const studentProfileForm = document.getElementById("student-profile-form");
 if (studentProfileForm) {
-  const profilePic = document.getElementById("profile-pic");
-  const photoUpload = document.getElementById("photo-upload");
-
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      const userRef = db.collection("users").doc(user.uid);
-      const userSnap = await userRef.get();
-      if (userSnap.exists) {
-        const userData = userSnap.data();
-        studentProfileForm.username.value = userData.username || "";
-        studentProfileForm.grade.value = userData.grade || "";
-        studentProfileForm.subjects.value = userData.subjects || "";
-        studentProfileForm.bio.value = userData.bio || "";
-        if (userData.photoURL) {
-          profilePic.src = userData.photoURL;
-        }
-      }
-    }
-  });
-
-  studentProfileForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const user = auth.currentUser;
-    if (user) {
-      const userRef = db.collection("users").doc(user.uid);
-      await userRef.update({
-        username: studentProfileForm.username.value,
-        grade: studentProfileForm.grade.value,
-        subjects: studentProfileForm.subjects.value,
-        bio: studentProfileForm.bio.value,
-      });
-
-      const file = photoUpload.files[0];
-      if (file) {
-        const storageRef = firebase.storage().ref();
-        const photoRef = storageRef.child(`profile-pictures/${user.uid}`);
-        await photoRef.put(file);
-        const photoURL = await photoRef.getDownloadURL();
-        await userRef.update({ photoURL });
-        profilePic.src = photoURL;
-      }
-
-      alert("Profile updated successfully!");
-    }
-  });
+  studentProfileForm.addEventListener("submit", (e) =>
+    handleProfileFormSubmit(e, studentProfileForm, {
+      username: studentProfileForm.username.value,
+      grade: studentProfileForm.grade.value,
+      subjects: studentProfileForm.subjects.value,
+      bio: studentProfileForm.bio.value,
+    })
+  );
 }
