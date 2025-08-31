@@ -72,33 +72,29 @@ document.addEventListener("DOMContentLoaded", () => {
     ? filterContainer.querySelector('input[placeholder="Filter by Grade"]')
     : null;
 
-  const courses = [
-    {
-      title: "Introduction to Algebra",
-      subject: "Math",
-      grade: "9",
-    },
-    {
-      title: "Advanced Physics",
-      subject: "Science",
-      grade: "12",
-    },
-    {
-      title: "History of Morocco",
-      subject: "History",
-      grade: "10",
-    },
-    {
-      title: "French Literature",
-      subject: "Languages",
-      grade: "11",
-    },
-    {
-      title: "Data Structures in Python",
-      subject: "Computer Science",
-      grade: "12",
-    },
-  ];
+  async function searchCourses() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const subjectTerm = subjectFilter ? subjectFilter.value.toLowerCase() : "";
+    const gradeTerm = gradeFilter ? gradeFilter.value.toLowerCase() : "";
+
+    let coursesQuery = db.collection("courses");
+
+    const coursesSnap = await coursesQuery.get();
+    const allCourses = coursesSnap.docs.map((doc) => doc.data());
+
+    const filteredCourses = allCourses.filter((course) => {
+      const titleMatch = course.title.toLowerCase().includes(searchTerm);
+      const subjectMatch =
+        !subjectTerm ||
+        (course.subject && course.subject.toLowerCase().includes(subjectTerm));
+      const gradeMatch =
+        !gradeTerm ||
+        (course.grade && course.grade.toLowerCase().includes(gradeTerm));
+      return titleMatch && subjectMatch && gradeMatch;
+    });
+
+    displayCourses(filteredCourses);
+  }
 
   function displayCourses(filteredCourses) {
     searchResults.innerHTML = ""; // Clear previous results
@@ -122,40 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (searchIcon) {
     searchIcon.addEventListener("click", () => {
-      const searchTerm = searchInput.value.toLowerCase();
-      const subjectTerm = subjectFilter
-        ? subjectFilter.value.toLowerCase()
-        : "";
-      const gradeTerm = gradeFilter ? gradeFilter.value.toLowerCase() : "";
-
-      const filteredCourses = courses.filter((course) => {
-        const titleMatch = course.title.toLowerCase().includes(searchTerm);
-        const subjectMatch =
-          !subjectTerm || course.subject.toLowerCase().includes(subjectTerm);
-        const gradeMatch =
-          !gradeTerm || course.grade.toLowerCase().includes(gradeTerm);
-        return titleMatch && subjectMatch && gradeMatch;
-        const yourCoursesLink = document.getElementById("your-courses-link");
-        if (yourCoursesLink) {
-          yourCoursesLink.addEventListener("click", (e) => {
-            const mainContent = document.querySelector("main");
-            const searchResults = document.getElementById("search-results");
-            const filterContainer = document.querySelector(".filter-container");
-            const trendingCourses = document.querySelector(".trending-courses");
-            const imageDescriptionSection = document.querySelector(
-              ".image-description-section"
-            );
-
-            if (mainContent) mainContent.style.display = "flex";
-            if (searchResults) searchResults.style.display = "none";
-            if (filterContainer) filterContainer.style.display = "none";
-            if (trendingCourses) trendingCourses.style.display = "block";
-            if (imageDescriptionSection)
-              imageDescriptionSection.style.display = "flex";
-          });
-        }
-      });
-
       if (mainContent) mainContent.style.display = "none";
       if (searchResults) searchResults.style.display = "block";
       if (filterContainer) filterContainer.style.display = "flex";
@@ -168,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (imageDescriptionSection)
         imageDescriptionSection.style.display = "none";
 
-      displayCourses(filteredCourses);
+      searchCourses();
     });
   }
 });

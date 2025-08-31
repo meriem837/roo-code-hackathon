@@ -219,6 +219,7 @@ main {
   display: flex;
   justify-content: center;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
 .course-box {
@@ -227,6 +228,23 @@ main {
   height: 400px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.add-course-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #000;
+  font-size: 24px;
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+}
+
+.add-course-box span {
+  font-size: 48px;
+  line-height: 1;
 }
 
 .image-description-section {
@@ -508,11 +526,6 @@ footer {
   margin-bottom: 50px;
 }
 
-.blog-page h1 {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
 .blog-posts {
   display: flex;
   flex-wrap: wrap;
@@ -632,4 +645,12 @@ footer {
 #feedback-dropup-container textarea {
   resize: vertical;
   min-height: 120px;
+}
+#page-main-heading {
+  text-align: center; /* Centers the text */
+  margin-top: 0; /* Removes extra spacing at the top */
+  padding: 20px; /* Adds some breathing room */
+  background-color: #f5f5f5; /* Optional: header background */
+  font-size: 2rem; /* Make it stand out */
+  font-weight: bold; /* Bold text */
 }
